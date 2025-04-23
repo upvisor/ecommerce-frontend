@@ -1,1 +1,5 @@
 export * from './NumberFormat'
+export * from './FreeShipping'
+export * from './QuantityOffer'
+export * from './AddToCartVariation'
+export * from './AddToCart'

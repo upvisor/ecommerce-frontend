@@ -1,16 +1,7 @@
 import React from 'react'
 
-interface Props {
-  type: string
-  placeholder: string
-  name?: string
-  change: any
-  value: string
-  config?: string
-}
-
-export const Input: React.FC<Props> = ({ type, placeholder, name, change, value, config }) => {
+export const Input = ({ inputChange, value, type, placeholder, name, text }: { inputChange: any, value: any, type: string, placeholder: string, name?: string, text?: string }) => {
   return (
-    <input type={type} placeholder={placeholder} name={name} onChange={change} value={value} className={`${config} p-2 rounded border text-sm transition-colors duration-150 focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600`} />
+    <input onChange={inputChange} value={value} type={type} placeholder={placeholder} name={name ? name : ''} className={`${text} p-1.5 w-full rounded-md border transition-colors duration-100 focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:bg-neutral-800 dark:border-neutral-700`} />
   )
 }

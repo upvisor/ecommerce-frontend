@@ -14,22 +14,22 @@ export default function PayProcess () {
     const status = urlParams.get('collection_status')
     if (tokenWs) {
       const sell = JSON.parse(localStorage.getItem('sell')!)
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transbank/commit`, { token: tokenWs, sell: sell })
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/pay/commit`, { token: tokenWs, sell: sell })
       if (response.data.status === 'FAILED') {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { pay: { ...sell.pay, state: 'Pago no realizado' } })
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { state: 'Pago no realizado' })
         router.push('/pago-fallido')
       }
       if (response.data.status === 'AUTHORIZED') {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { pay: { ...sell.pay, state: 'Pago realizado' } })
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { state: 'Pago realizado' })
         router.push('/gracias-por-comprar')
       }
     } else if (status) {
       const sell = JSON.parse(localStorage.getItem('sell')!)
       if (status === 'approved') {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { pay: { ...sell.pay, state: 'Pago realizado' } })
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { state: 'Pago realizado' })
         router.push('/gracias-por-comprar')
       } else {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { pay: { ...sell.pay, state: 'Pago no realizado' } })
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { state: 'Pago no realizado' })
         router.push('/pago-fallido')
       }
     }
@@ -40,7 +40,7 @@ export default function PayProcess () {
   }, [])
 
   return (
-    <div className='w-full bg-white m-auto flex' style={{ height: 'calc(100% - 150px)' }}>
+    <div className='w-full bg-white fixed flex' style={{ height: 'calc(100% - 150px)' }}>
       <div className='w-fit m-auto'>
         <Spinner />
       </div>
